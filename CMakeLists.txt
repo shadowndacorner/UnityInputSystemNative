@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(UnityInputSystem)
 
+set (CMAKE_CXX_STANDARD 11)
 set(UINPUT_ROOT ${CMAKE_SOURCE_DIR})
 
 set(LIBRARY_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
@@ -25,8 +26,19 @@ target_include_directories(sample PUBLIC ${LIBRARY_INCLUDE_DIR})
 # this lets me include files relative to the root src dir with a <> pair
 target_include_directories(sample PUBLIC include)
 
-IF (UNIX)
+if (UNIX)
+    target_compile_definitions(uinput PUBLIC UINPUT_LINUX)
+endif()
+if (APPLE)
+    target_compile_definitions(uinput PUBLIC UINPUT_OSX)
+endif()
+
+IF (UNIX OR APPLE)
     # find and target SDL
+    find_package(SDL2 REQUIRED)
+    include_directories(${SDL2_INCLUDE_DIRS})
+    target_link_libraries(uinput ${SDL2_LIBRARIES})
+
     target_link_libraries(sample PUBLIC
         uinput
     )

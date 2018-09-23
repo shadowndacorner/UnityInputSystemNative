@@ -179,9 +179,15 @@ public:
 		pad.wButtons = cnt.GetUInputButtons();
 		pad.sThumbLX = cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX);
 		pad.sThumbRX = cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
-		pad.sThumbLY = -cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY);
-		pad.sThumbRY = -cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+
+		int maxAxis = -cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY);
+		maxAxis = maxAxis > 32767 ? 32767 : maxAxis;
+		pad.sThumbLY = maxAxis;
 		
+		maxAxis = -cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+		maxAxis = maxAxis > 32767 ? 32767 : maxAxis;
+		
+		pad.sThumbRY = maxAxis;
 		auto left = float(cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERLEFT)) / 32767.f * 255.f;
 		auto right = float(cnt.GetAxis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERRIGHT)) / 32767.f * 255.f;
 

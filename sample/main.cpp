@@ -4,11 +4,15 @@
 #include <SDL2/SDL.h>
 #include <thread>
 #include <chrono>
+#include <unistd.h>
 
 int main(int argc, char** argv)
 {
+	#if __WIN32
 	auto dll = SDL_LoadObject("uinput.dll");
-	
+	#else
+	auto dll = SDL_LoadObject("libuinput.dylib");
+	#endif
 	UInputPlugin plugin;
 	plugin.Update = (UInputPlugin::UInputUpdateFunc)SDL_LoadFunction(dll, "UInputUpdate");
 	plugin.GetState = (UInputPlugin::UInputGamePadGetStateFunc)SDL_LoadFunction(dll, "UInputGamePadGetState");
@@ -26,7 +30,8 @@ int main(int argc, char** argv)
 	{
 		if (int(plugin.Update == NULL) + int(plugin.GetState == NULL) + int(plugin.SetState == NULL) + int(plugin.GamepadCount == NULL) != 0)
 		{
-			cout << "Something is null" << endl;
+			cout << (plugin.Update != 0) << ":" << (plugin.GetState != 0) << ":" << (plugin.SetState != 0) << ":" << (plugin.GamepadCount != 0) << std::endl;
+			//cout << "Something is null" << endl;
 		}
 		else
 		{
@@ -45,6 +50,7 @@ int main(int argc, char** argv)
 					cout << "\tB: " << (((state.Gamepad.wButtons & ButtonsConstants::B) != 0) ? "Pressed" : "Released") << endl;
 					cout << "\tX: " << (((state.Gamepad.wButtons & ButtonsConstants::X) != 0) ? "Pressed" : "Released") << endl;
 					cout << "\tY: " << (((state.Gamepad.wButtons & ButtonsConstants::Y) != 0) ? "Pressed" : "Released") << endl;
+					cout << "Left stick Y" << state.Gamepad.sThumbLY << std::endl;
 				}
 				else
 				{
@@ -55,9 +61,10 @@ int main(int argc, char** argv)
 		}
 
 		{
-			using namespace chrono_literals;
-			this_thread::sleep_for(100ms);
-			system("cls");
+			//using namespace chrono_literals;
+			usleep(1000);
+//			this_thread::sleep_for(100ms);
+			//system("cls");
 		}
 	}
 }

@@ -5,6 +5,8 @@
 #define UINPUT_EXPORT __declspec(dllexport)
 #elif defined(UINPUT_LINUX) || defined(UINPUT_OSX)
 #define UINPUT_EXPORT
+#else
+#error Export not defined
 #endif
 
 extern "C"
