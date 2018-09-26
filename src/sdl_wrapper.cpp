@@ -18,9 +18,16 @@ public:
 	GameControllerWrapper() :
 		controller(NULL),
 		joystickID(-1) {}
+	
 	GameControllerWrapper(int id) :
 		controller(SDL_GameControllerOpen(id)),
 		joystickID(id) {}
+
+	// SDL_GameController is refcounted, so this is perfectly
+	// valid.
+	GameControllerWrapper(const GameControllerWrapper& rhs) :
+		controller(SDL_GameControllerOpen(rhs.joystickID)),
+		joystickID(rhs.joystickID) {}
 
 	GameControllerWrapper(GameControllerWrapper&& rhs) :
 		controller(rhs.controller), joystickID(rhs.joystickID)
@@ -118,7 +125,7 @@ public:
 
 	void JoystickRemoved(SDL_ControllerDeviceEvent& ev)
 	{
-
+		
 	}
 
 	InputSystemState() : maxIndex(0)

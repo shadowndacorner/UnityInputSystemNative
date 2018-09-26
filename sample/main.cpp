@@ -12,8 +12,10 @@ int main(int argc, char** argv)
 {
 	#if __WIN32
 	auto dll = SDL_LoadObject("uinput.dll");
-	#else
+	#elif defined(__APPLE__)
 	auto dll = SDL_LoadObject("libuinput.dylib");
+	#else
+	auto dll = SDL_LoadObject("libuinput.so");
 	#endif
 	UInputPlugin plugin;
 	plugin.Update = (UInputPlugin::UInputUpdateFunc)SDL_LoadFunction(dll, "UInputUpdate");
@@ -21,10 +23,10 @@ int main(int argc, char** argv)
 	plugin.SetState = (UInputPlugin::UInputGamePadSetStateFunc)SDL_LoadFunction(dll, "UInputGamePadSetState");
 	plugin.GamepadCount = (UInputPlugin::UInputGamepadCountFunc)SDL_LoadFunction(dll, "UInputGamepadCount");
 
-	std::cout << (plugin.Update == NULL) << std::endl;
-	std::cout << (plugin.GetState == NULL) << std::endl;
-	std::cout << (plugin.SetState == NULL) << std::endl;
-	std::cout << (plugin.GamepadCount == NULL) << std::endl;
+	std::cout << (plugin.Update) << std::endl;
+	std::cout << (plugin.GetState) << std::endl;
+	std::cout << (plugin.SetState) << std::endl;
+	std::cout << (plugin.GamepadCount) << std::endl;
 
 	// This is awful but meh
 	using namespace std;
@@ -68,7 +70,7 @@ int main(int argc, char** argv)
 			this_thread::sleep_for(100ms);
 			system("cls");
 #else
-			usleep(1000);
+			usleep(100000);
 #endif
 		}
 	}
