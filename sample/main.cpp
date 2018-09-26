@@ -4,7 +4,9 @@
 #include <SDL2/SDL.h>
 #include <thread>
 #include <chrono>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 int main(int argc, char** argv)
 {
@@ -41,7 +43,7 @@ int main(int argc, char** argv)
 			cout << cnt << " gamepads loaded" << endl;
 			
 			UInputState state;
-			for (auto i = 0; i < cnt; ++i)
+			for (uint32_t i = 0; i < cnt; ++i)
 			{
 				if (plugin.GetState(i, &state) == 0)
 				{
@@ -61,10 +63,13 @@ int main(int argc, char** argv)
 		}
 
 		{
-			//using namespace chrono_literals;
+#ifdef _WIN32
+			using namespace chrono_literals;
+			this_thread::sleep_for(100ms);
+			system("cls");
+#else
 			usleep(1000);
-//			this_thread::sleep_for(100ms);
-			//system("cls");
+#endif
 		}
 	}
 }

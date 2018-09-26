@@ -11,10 +11,6 @@ set(SAMPLE_SRC_DIR ${CMAKE_SOURCE_DIR}/sample)
 file(GLOB_RECURSE LIBRARY_SRC ${LIBRARY_SRC_DIR}/*.cpp ${UINPUT_ROOT}/include/*.h)
 file(GLOB_RECURSE SAMPLE_SRC ${SAMPLE_SRC_DIR}/*.cpp)
 
-message(STATUS SOMETHING SOMETHING)
-message(STATUS ${LIBRARY_SRC_DIR})
-message(STATUS DONE)
-
 add_library(uinput SHARED ${LIBRARY_SRC})
 add_executable(sample ${SAMPLE_SRC})
 
