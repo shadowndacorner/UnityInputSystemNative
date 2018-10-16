@@ -12,10 +12,10 @@ file(GLOB_RECURSE LIBRARY_SRC ${LIBRARY_SRC_DIR}/*.cpp ${UINPUT_ROOT}/include/*.
 file(GLOB_RECURSE SAMPLE_SRC ${SAMPLE_SRC_DIR}/*.cpp)
 
 add_library(uinput SHARED ${LIBRARY_SRC})
+target_include_directories(uinput PUBLIC ${LIBRARY_INCLUDE_DIR})
 if (EMSCRIPTEN)
     message(status Skipping sample)
     # add the data to the target, so it becomes visible in some IDE
-    target_include_directories(uinput PUBLIC ${LIBRARY_INCLUDE_DIR})
 else()
     add_executable(sample ${SAMPLE_SRC})
     target_include_directories(sample PUBLIC ${LIBRARY_INCLUDE_DIR})

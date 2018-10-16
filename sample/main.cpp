@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv)
 {
-	#if __WIN32
+	#if _WIN32
 	auto dll = SDL_LoadObject("uinput.dll");
 	#elif defined(__APPLE__)
 	auto dll = SDL_LoadObject("libuinput.dylib");
