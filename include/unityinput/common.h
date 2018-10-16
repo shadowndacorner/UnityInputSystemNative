@@ -3,7 +3,7 @@
 
 #if defined(_WIN32)
 #define UINPUT_EXPORT __declspec(dllexport)
-#elif defined(UINPUT_LINUX) || defined(UINPUT_OSX)
+#elif defined(UINPUT_LINUX) || defined(UINPUT_OSX) || defined(EMSCRIPTEN)
 #define UINPUT_EXPORT
 #else
 #error Export not defined
@@ -11,7 +11,7 @@
 
 extern "C"
 {
-	enum ButtonsConstants : uint16_t
+	enum ButtonsConstants
 	{
 		DPadUp = 0x00000001,
 		DPadDown = 0x00000002,

@@ -1,10 +1,19 @@
 #include <unityinput/common.h>
+#if defined(EMSCRIPTEN)
+#include <SDL.h>
+#include <emscripten/emscripten.h>
+#include <SDL_gamecontroller.h>
+#else
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_gamecontroller.h>
+#endif
 
 #include <unityinput/exports.h>
 #include <unordered_map>
 
+#ifdef SDL_JOYSTICK_DISABLED
+#error No joystick support
+#else
 enum GamepadGetStateReturns : uint32_t
 {
 	Success = 0,
@@ -258,3 +267,4 @@ extern "C"
 
 	}
 }
+#endif
